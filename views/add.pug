@@ -1,0 +1,63 @@
+html
+  head
+    title Test
+    script var authors=#{authors}; var authorsName = "#{authorsName}";
+    script(src="/add.js")
+    script(src="/main.js")
+
+    link(rel="stylesheet" href="/style.css")
+  body
+    div("id"="filter-container")
+  if !authors
+      form(id="author-form" "action"="test")
+      label  Name
+        input(type="text" name="author_name")
+      label birth
+        input(type="text" name="author_birth")
+      label death
+        input(type="text" name="author_death")
+      label discipline
+        div(id="disciplines-container")
+
+        input(type="text" id="disciplines-input" name="author_discipline")
+      input(type="hidden" name="author_existing_discipline")
+      label approach
+        div(id="approaches-container")
+        input(type="text" name="author_approach")
+        input(type="text" id="approaches-input" class="existing-approach" name="author_existing_approach")
+      label Tags
+        input(type="text" name="author_tags_")
+      input(type="hidden" name="author_existing_tags")
+  if authors && !medias
+      div #{authorsName}
+      form(id="media-form" "action"="test")
+        label Title
+          input(type="text" name="media_name")
+        label Author
+          input(type="text", name="media_author_", value=authors)
+        label Subtitle
+          input(type="text" name="media_subtitle")
+        label Year
+          input(type="text" name="media_year")
+        label Publisher
+          input(type="text" name="media_publisher")
+        label Tags
+          input(type="hidden" name="media_existing_tags")
+          input(type="text" name="media_tags_")
+  if authors && medias
+      div #{authorsName} — #{mediasName}
+      form(id="quote-form" "action"="test")
+        label Quote
+          input(type="textarea" name="quote_text")
+        label Author
+          input(type="text", name="quote_author_", value=authors)
+        label Media
+          input(type="text", name="quote_medias_", value=medias)
+        label Page
+          input(type="text" name="quote_page")
+        label Time
+          input(type="text" name="quote_time")
+        label Tags
+          input(type="hidden" name="media_existing_tags")
+          input(type="text" name="media_tags_")
+

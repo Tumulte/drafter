@@ -1,0 +1,106 @@
+{
+  "quotes": [{
+    "id": 1,
+    "author_": 1,
+    "text": "La décroissance capitaliste est un solécisme manifeste […] en régime capitaliste, la diminution du PIB s'appelle la récession",
+    "media_": 1,
+    "page": 11,
+    "time": false,
+    "tags_": [2, 3]
+  }, {
+    "id": 2,
+    "author_": 2,
+    "text": "Le plus surprenant dars le discours de l'européisme de la gauche critique ne réside pourtant pas dans cette fermeture aux arguments de L'analyse politique réaliste, dont on sait qu'elle parvient rarement à désarmer «les positions de principe» , mais das l'ignorance précisément, d'un autre principe auquel normalement ce discours devrait être sensible : la résistance à la marchandisation du monde et à l'empire absolu de l'économique sur les sociétés contemporaines",
+    "media_": 1,
+    "page": 157,
+    "time": false,
+    "tags_": [3, 4]
+  }, {
+    "id": 3,
+    "author_": 1,
+    "text": "Qu'on oppose donc pas l'objection décroissante au urgences qui nous assaillent […] dont le caractère extrèeme requiert de faire quelque chose vite, très vite, quitte à ce que ce soit d'abbord dans le cadre de l'accumulation capitaliste",
+    "media_": 1,
+    "page": 11,
+    "time": false,
+    "tags_": false
+  }],
+  "medias": [{
+    "id": 1,
+    "type": 1,
+    "author_": 1,
+    "name": "La Malfaçon",
+    "subtitle": "Monnaie européenne et souveraineté démocratique",
+    "year": "2014",
+    "publisher": "Babel",
+    "tags_": false
+  }],
+
+  "authors": [{
+    "id": 1,
+    "name": "Frédéric Lordon",
+    "birth": 1962,
+    "death": false,
+    "disciplines_": [1, 2, 3],
+    "approaches_": [1, 2, 3, 4],
+    "tags_": false
+  }, {
+    "id": 2,
+    "name": "Lérfédic Dorlon",
+    "birth": 1962,
+    "death": false,
+    "disciplines_": [1, 2, 3],
+    "approaches_": [1, 2, 3, 4],
+    "tags_": false
+  }],
+  "type": [{
+    "id": 1,
+    "type": "book"
+  }, {
+    "id": 2,
+    "type": "radio"
+  }, {
+    "id": 3,
+    "type": "internet video"
+  }],
+  "disciplines": [{
+      "id": 1,
+      "name": "Économiste"
+    },
+    {
+      "id": 2,
+      "name": "Sociologue"
+
+    },
+    {
+      "id": 3,
+      "name": "Philosophe"
+
+    }
+  ],
+  "approaches": [{
+    "id": 1,
+    "name": "École de la régulation"
+  }, {
+    "id": 2,
+    "name": "Économie Politique"
+  }, {
+    "id": 3,
+    "name": "Structuralisme"
+  }, {
+    "id": 4,
+    "name": "Spinozisme"
+  }],
+  "tags": [{
+    "id": 1,
+    "name": "Europe"
+  }, {
+    "id": 2,
+    "name": "Capitalisme"
+  }, {
+    "id": 3,
+    "name": "Décroissance"
+  }, {
+    "id": 4,
+    "name": "Gauche"
+  }]
+}
