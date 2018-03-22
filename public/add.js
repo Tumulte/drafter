@@ -41,7 +41,7 @@ var enableCaracButton = function (type) {
 var valueIntoCaracButton = function (element, property, type) {
   var list = "";
   if (property === "name") {
-    list += '<li><button data-carac="' + type + '" data-id="' + element['id'] + '" class="carac-' + type + '-button">' + element[property] + '</button></li>';
+    list += '<li><button data-carac="' + type + '" data-id="' + element['id'] + '" class="carac-' + type + '-button carac-button">' + element[property] + '</button></li>';
   }
   return list;
 }
@@ -67,5 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
       "id": authors
     }, printFormFilter)
   }
+  getData("tags", false, printCaracs);
 
 });

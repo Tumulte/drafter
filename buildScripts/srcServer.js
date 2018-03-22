@@ -1,6 +1,5 @@
 var express = require('express');
 //Tools
-var browserify = require('browserify-middleware');
 var bodyParser = require('body-parser')
 var populateQueryDict = function (query, args) {
   for (var element in query) {
@@ -41,8 +40,6 @@ app.set('view engine', "pug");
 //Static Files
 app.use(express.static('public'));
 
-//Frontend JS
-app.get('/app.js', browserify('./src/main.js'));
 
 
 //Pages

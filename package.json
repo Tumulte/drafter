@@ -5,19 +5,16 @@
   "description": "JavaScript development environment Pluralsight course by Cory House",
   "scripts": {
     "prestart": "node buildScripts/startMessage.js",
-    "start": "npm-run-all --parallel open:src lint:watch security-check test:watch watch replace-fs",
-    "open:src": "nodemon buildScripts/srcServer.js --exec \"npm run lint:watch\"",
+    "start": "npm-run-all --parallel open:src security-check test:watch lint:watch ",
+    "open:src": "nodemon buildScripts/srcServer.js",
     "security-check": "nsp check",
     "lint": "esw webpack.config.* src buildScripts --color",
     "lint:watch": "npm run lint -- --watch",
     "test": "mocha --reporter progress \"routes/**/*.test.js\" \"public/**/*.test.js\"  \"utils/**/*.test.js\"",
-    "test:watch": "npm run test -- --watch",
-    "watch": "watchify src/main.js -o public/app.js -v",
-    "build": "browserify src/main.js -o public/app.js",
-    "replace-fs": "browserify -r fs:browserify-fs"
+    "test:watch": "npm run test -- --watch"
   },
-  "author": "Cory House",
-  "license": "MIT",
+  "author": "Étienne Rouge",
+  "license": "Copyright",
   "dependencies": {},
   "devDependencies": {
     "watchify": "3.9.0",
@@ -49,9 +46,15 @@
     "lowdb": "1.0.0",
     "body-parser": "1.18.2",
     "shortid": "2.2.8",
-    "supertest": "3.0.0"
+    "supertest": "3.0.0",
+    "jquery": "3.3.1"
   },
   "nodemonConfig": {
-    "ignore": ["data/*", "public/*", "src/*", "views/*", "*.test.js"]
+    "ignore": [
+      "data/*",
+      "public/*",
+      "views/*",
+      "*.test.js"
+    ]
   }
 }

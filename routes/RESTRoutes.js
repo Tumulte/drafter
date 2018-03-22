@@ -43,6 +43,15 @@ var findRelationnalProperties = function (data, db) {
     }
   }
 }
+var sanatizeData = function (data) {
+  var dataClean = {};
+  for (item in data) {
+    if (!item.indexOf('_')) {
+      dataClean[item] = data[item];
+    }
+  }
+  return dataClean;
+}
 var getRelations = function (data, db) {
   findRelationnalProperties(data, db);
   flagAsCached(data);
@@ -80,7 +89,7 @@ var RESTRoutes = function (db) {
     }
   })
   dataRouter.route('/:table').get(function (req, res) {
-
+      console.info('I GO HERE AND I SHOULDN\'T')
       if (db.has(req.params.table).value()) {
         var dbQuery = db.get(req.params.table).filter(function (o) {
           return detectArrayInFilter(o, req.query);
@@ -92,8 +101,9 @@ var RESTRoutes = function (db) {
       }
     })
     .post(function (req, res) {
-      db.get(req.param.table).push(
-        req.body
+      var data = sanatizeData(req.body);
+      db.get(req.params.table).push(
+        data
       ).write();
       res.send("ok");
     })
@@ -122,7 +132,7 @@ var updateItem = function (req, res) {
     .write()
   res.send("updated !");
 }
-
 module.exports = {
-  "RESTRoutes": RESTRoutes
+  "RESTRoutes": RESTRoutes,
+  "sanatizeData": sanatizeData
 };

@@ -9,25 +9,27 @@ html
   body
     div("id"="filter-container")
   if !authors
-      form(id="author-form" "action"="test")
-      label  Name
-        input(type="text" name="author_name")
-      label birth
-        input(type="text" name="author_birth")
-      label death
-        input(type="text" name="author_death")
-      label discipline
-        div(id="disciplines-container")
+      form(id="author-form" method="post" action="/api/authors")
+        label  Name
+          input(type="text" name="name")
+        label birth
+          input(type="text" name="birth")
+        label death
+          input(type="text" name="death")
+        label discipline
+          div(id="disciplines-container")
 
-        input(type="text" id="disciplines-input" name="author_discipline")
-      input(type="hidden" name="author_existing_discipline")
-      label approach
-        div(id="approaches-container")
-        input(type="text" name="author_approach")
-        input(type="text" id="approaches-input" class="existing-approach" name="author_existing_approach")
-      label Tags
-        input(type="text" name="author_tags_")
-      input(type="hidden" name="author_existing_tags")
+          input(type="text" id="disciplines-input" name="author_discipline")
+        input(type="hidden" name="author_existing_discipline")
+        label approach
+          div(id="approaches-container")
+          input(type="text" name="author_approach")
+          input(type="text" id="approaches-input" class="existing-approach" name="author_existing_approach")
+        label Tags
+          div(id="tags-container")
+          input(type="text" name="author_tags_")
+          input(type="text" id="tags-input" class="existing-tags" name="author_existing_tags")
+        button Submit
   if authors && !medias
       div #{authorsName}
       form(id="media-form" "action"="test")
@@ -42,8 +44,9 @@ html
         label Publisher
           input(type="text" name="media_publisher")
         label Tags
-          input(type="hidden" name="media_existing_tags")
+          div(id="tags-container")
           input(type="text" name="media_tags_")
+          input(type="text" id="tags-input" class="existing-tags" name="media_existing_tags")
   if authors && medias
       div #{authorsName} — #{mediasName}
       form(id="quote-form" "action"="test")
@@ -58,6 +61,7 @@ html
         label Time
           input(type="text" name="quote_time")
         label Tags
-          input(type="hidden" name="media_existing_tags")
-          input(type="text" name="media_tags_")
+          div(id="tags-container")
+          input(type="text" name="quotes_tags_")
+          input(type="text" id="tags-input" class="existing-tags" name="quotes_existing_tags")
 

@@ -79,6 +79,7 @@ var getData = function (type, filter, callback) {
 }
 if (typeof module !== 'undefined') {
   module.exports = {
-    "printFullDataList": printFullDataList
+    "printFullDataList": printFullDataList,
+    "createFilterLinks": createFilterLinks
   };
 }
