@@ -5,10 +5,10 @@
   "description": "JavaScript development environment Pluralsight course by Cory House",
   "scripts": {
     "prestart": "node buildScripts/startMessage.js",
-    "start": "npm-run-all --parallel open:src security-check test:watch lint:watch ",
+    "start": "npm-run-all --parallel open:src security-check test:watch lint:watch",
     "open:src": "nodemon buildScripts/srcServer.js",
     "security-check": "nsp check",
-    "lint": "esw webpack.config.* src buildScripts --color",
+    "lint": "esw webpack.config.* public routes utils buildScripts --color",
     "lint:watch": "npm run lint -- --watch",
     "test": "mocha --reporter progress \"routes/**/*.test.js\" \"public/**/*.test.js\"  \"utils/**/*.test.js\"",
     "test:watch": "npm run test -- --watch"
@@ -50,6 +50,7 @@
     "jquery": "3.3.1"
   },
   "nodemonConfig": {
+    "verbose": true,
     "ignore": [
       "data/*",
       "public/*",

@@ -18,17 +18,16 @@ html
           input(type="text" name="death")
         label discipline
           div(id="disciplines-container")
-
-          input(type="text" id="disciplines-input" name="author_discipline")
-        input(type="hidden" name="author_existing_discipline")
+          input(type="text" id="disciplines-input" name="new_disciplines_")
+        input(type="hidden" name="existing_disciplines_")
         label approach
           div(id="approaches-container")
-          input(type="text" name="author_approach")
-          input(type="text" id="approaches-input" class="existing-approach" name="author_existing_approach")
+          input(type="text" name="new_approaches_")
+          input(type="text" id="approaches-input" class="existing-approach" name="existing_approaches_")
         label Tags
           div(id="tags-container")
-          input(type="text" name="author_tags_")
-          input(type="text" id="tags-input" class="existing-tags" name="author_existing_tags")
+          input(type="text" name="new_tags_")
+          input(type="text" id="tags-input" class="existing-tags" name="existing_tags")
         button Submit
   if authors && !medias
       div #{authorsName}

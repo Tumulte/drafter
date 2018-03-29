@@ -7,16 +7,30 @@ global.document = dom.window.document;
 global.window = dom.window;
 
 const main = require("./main");
-var data = require("../data/datatest.json");
 const $ = require("jquery");
+const RESTRoute = require("../routes/RESTroutes");
+//DB
+var FileSync = require('lowdb/adapters/FileSync');
+var low = require('lowdb');
+var adapter = new FileSync('./data/datatest.json')
+var db = low(adapter)
+var req = {
+  "params": {
+    "table": "quotes"
+  },
+  "query": ""
+}
+var data = RESTRoute.fetchData(db, req);
+
 
 describe("Turn a Json into a fine HTML list", () => {
 
+
   it('should turn JSON data into HTML list', function () {
-    expect(main.printFullDataList(data.quotes)).to.have.string('<li>author : <a class="filter-list" href="/api/authors/1">Frédéric Lordon</a></li>');
+    expect(main.printFullDataList(data)).to.have.string('<li>author : <a class="filter-list" href="/api/authors/1">Frédéric Lordon</a></li>');
   });
   it('should turn Tags array into links', function () {
-    expect(main.printFullDataList(data.quotes)).to.have.string('<li>tags : <a class="filter-list" href="/api/tags/2">Capitalisme</a></li>');
+    expect(main.printFullDataList(data)).to.have.string('<li>tags : <a class="filter-list" href="/api/tags/2">Capitalisme</a></li>');
   })
 });
 describe("it should create filter links", function () {

@@ -12,7 +12,6 @@ var extractFilterFromLink = function (link) {
 }
 
 //Main
-
 var valueIntoList = function (element, property) {
   var list = ""
   if (element[property][0] !== undefined && typeof element[property][0] === "object") {
@@ -21,9 +20,11 @@ var valueIntoList = function (element, property) {
         property + '/' + item.id + '">' + item.name + '</a></li>';
     })
   } else if (typeof element[property] === "object") {
+
     list += '<li>' + property + ' : <a class="filter-list" href="/api/' + property + "s/" + element[property].id + '">' + element[property].name + '</a></li>';
   } else if (element[property]) {
     list += "<li>" + property + " : " + element[property] + "</li>";
+
   }
   return list;
 }
@@ -48,7 +49,6 @@ var createListFromJSON = function (data, callback, type) {
     }
   });
   list += "</ul>";
-
   return list;
 }
 var printFullDataList = function (data) {
@@ -65,7 +65,6 @@ var getData = function (type, filter, callback) {
   } else if (filter) {
     url = "/api/" + type + "/?" + filter.by + "=" + filter.id;
   }
-  console.info(url);
   request.open("GET", url);
   request.send();
   request.onload = function () {

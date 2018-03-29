@@ -15,8 +15,15 @@
     "mocha": true
   },
   "rules": {
-    "no-console": 1, //0 off, 1 warning, 2 error (casse le build)
+    "no-console": 1,
     "strict": 1,
     "eqeqeq": 1
+  },
+  "globals": {
+    "authors": true,
+    "getData": true,
+    "authorsName": true,
+    "createListFromJSON": true,
+    "printFullDataList": true
   }
 }

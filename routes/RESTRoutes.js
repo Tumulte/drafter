@@ -2,9 +2,33 @@ var express = require('express');
 var shortid = require('shortid');
 var relationEndMarker = "_";
 var utils = require('../utils/utils');
-var numberIfInt = utils.numberIfInt;
+var detectType = utils.detectType;
+var filterFromQuery = function (o, query) {
 
-//UTILITY FUNCTIONS
+  for (var property in query) {
+    var reqQuery = detectType(query[property]);
+    if (property === "tag_" && o.tags_) {
+      return o.tags_.indexOf(reqQuery) !== -1;
+    } else if (query) {
+      return detectType(o[property]) === reqQuery;
+    }
+  }
+  return true;
+}
+var getRelations = function (db, data) {
+  findRelationnalProperties(data, db);
+  flagAsCached(data);
+  return data;
+}
+
+var fetchData = function (db, req) {
+  var dbQuery = db.get(req.params.table).filter(function (o) {
+    return filterFromQuery(o, req.query);
+  }).value();
+  return getRelations(db, dbQuery);
+}
+
+//UTILITY FUNCTIONS
 var flagAsCached = function (query) {
   if (query[0] !== undefined) {
     query[0]["cached"] = true;
@@ -17,7 +41,7 @@ var replaceIDByData = function (data, item, db) {
   if (data[item] === false) {
     return dbQuery;
   } else if (typeof data[item] === "number") {
-    table = item.replace("_", "s");
+    var table = item.replace("_", "s");
     dbQuery = db.get(table).find({
       "id": data[item]
     }).value();
@@ -38,39 +62,89 @@ var findRelationnalProperties = function (data, db) {
     if (data[item] !== null && typeof data[item] === "object" && data[item].hasOwnProperty("id")) {
       findRelationnalProperties(data[item], db);
     } else if (lastChar === relationEndMarker) {
-      table = item.replace("_", "");
+      var table = item.replace("_", "");
       data[table] = replaceIDByData(data, item, db);
     }
   }
 }
-var sanatizeData = function (data) {
-  var dataClean = {};
-  for (item in data) {
-    if (!item.indexOf('_')) {
-      dataClean[item] = data[item];
+var savenewRelations = function (data) {
+  data.forEach(function (element) {
+    var table = element.type;
+    element.forEach(function (data) {
+      if (data.hasOwnProperty("id") && e.id) {
+        db.get(table).push(
+          data
+        ).write();
+      }
+    });
+  });
+}
+var handleRelations = function (existingData, newData, item) {
+  if (!newData && !existingData) {
+    return {
+      "IDArray": false
+    };
+  } else if (!newData) {
+    return existingData;
+  } else if (!existingData) {
+    existingData = [];
+  }
+  var newRelations = [];
+  var newRelationsID = [];
+  if (typeof newData === "string") {
+    newData = newData.split(',');
+  }
+  if (item.indexOf('existing') !== -1) {
+    return {
+      "IDArray": existingData.concat(newData)
+    };
+  }
+  newData.forEach(function (element) {
+    var id = shortid.generate();
+    newRelationsID.push(id);
+    newRelations.push({
+      "id": id,
+      "name": element.trim()
+    });
+  });
+  return {
+    "IDArray": existingData.concat(newRelationsID),
+    "newRelations": newRelations
+  };
+}
+var standardizePostData = function (data) {
+
+  var standardizedData = {};
+  var newRelations = [];
+  standardizedData["id"] = shortid.generate();
+  for (var item in data) {
+    if (utils.isRelationnal(item)) {
+      var attribute = item.replace("existing_", "").replace("new_", "");
+      var existingData = false;
+      var newData = data[item];
+      if (standardizedData.hasOwnProperty(attribute)) {
+        existingData = standardizedData[attribute];
+      }
+      var relations = handleRelations(existingData, newData, item);
+      standardizedData[attribute] = relations.IDArray;
+      if (relations.newRelations) {
+        newRelations.push(relations.newRelations);
+      }
+
+      if (relations.hasOwnProperty("newRelations")) {
+        relations.newRelations["type"] = attribute.replace("_", "");
+      } else {
+        relations["newRelations"] = false;
+      }
+    } else {
+      standardizedData[item] = data[item];
     }
   }
-  return dataClean;
+  return {
+    "data": standardizedData,
+    "relations": newRelations
+  };
 }
-var getRelations = function (data, db) {
-  findRelationnalProperties(data, db);
-  flagAsCached(data);
-  return data;
-}
-var detectArrayInFilter = function (o, query) {
-
-  for (property in query) {
-    reqQuery = numberIfInt(query[property]);
-    if (property === "tag_" && o.tags_) {
-      return o.tags_.indexOf(reqQuery) !== -1;
-    } else if (query) {
-
-      return numberIfInt(o[property]) === reqQuery;
-    }
-  }
-  return true;
-}
-
 var RESTRoutes = function (db) {
   var dataRouter = express.Router();
   dataRouter.use('/:table/:quoteId', function (req, res, next) {
@@ -81,7 +155,7 @@ var RESTRoutes = function (db) {
       }).value();
     }
     if (fetch && fetch !== undefined) {
-      fetch = getRelations(fetch, db);
+      fetch = getRelations(db, fetch);
       req.data = fetch;
       next();
     } else {
@@ -89,22 +163,18 @@ var RESTRoutes = function (db) {
     }
   })
   dataRouter.route('/:table').get(function (req, res) {
-      console.info('I GO HERE AND I SHOULDN\'T')
       if (db.has(req.params.table).value()) {
-        var dbQuery = db.get(req.params.table).filter(function (o) {
-          return detectArrayInFilter(o, req.query);
-        }).value();
-        dbQuery = getRelations(dbQuery, db);
-        res.json(dbQuery);
+        res.json(fetchData(db, req));
       } else {
         res.status(404).send("There is no table named " + req.params.table)
       }
     })
     .post(function (req, res) {
-      var data = sanatizeData(req.body);
+      var data = standardizePostData(req.body);
       db.get(req.params.table).push(
-        data
+        data.data
       ).write();
+      savenewRelations(data.relations);
       res.send("ok");
     })
   dataRouter.route('/:table/:quoteId')
@@ -123,6 +193,7 @@ var RESTRoutes = function (db) {
           "id": req.params.quoteId
         })
         .write()
+      res.send("ok");
     });
   return dataRouter;
 };
@@ -134,5 +205,6 @@ var updateItem = function (req, res) {
 }
 module.exports = {
   "RESTRoutes": RESTRoutes,
-  "sanatizeData": sanatizeData
+  "standardizePostData": standardizePostData,
+  "fetchData": fetchData
 };

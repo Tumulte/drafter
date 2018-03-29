@@ -43,16 +43,16 @@
     "name": "Frédéric Lordon",
     "birth": 1962,
     "death": false,
-    "discipline": [1, 2, 3],
-    "approach": [1, 2, 3, 4],
+    "disciplines_": [1, 2, 3],
+    "approaches_": [1, 2, 3, 4],
     "tags_": false
   }, {
     "id": 2,
     "name": "Lérfédic Dorlon",
     "birth": 1962,
     "death": false,
-    "discipline": [1, 2, 3],
-    "approach": [1, 2, 3, 4],
+    "disciplines_": [1, 2, 3],
+    "approaches_": [1, 2, 3, 4],
     "tags_": false
   }],
   "type": [{

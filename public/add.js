@@ -14,9 +14,8 @@ var concatenateID = function (input, id) {
   if (!input.getAttribute("value")) {
     return id;
   }
-  value = input.getAttribute("value");
-  valueArray = value.split(',')
-  console.debug(valueArray.indexOf(id));
+  var value = input.getAttribute("value");
+  var valueArray = value.split(',')
   if (valueArray.indexOf(id) !== -1) {
     valueArray.splice(valueArray.indexOf(id), 1);
   } else {
@@ -31,10 +30,9 @@ var enableCaracButton = function (type) {
     links[i].addEventListener("click", function (e) {
       e.preventDefault();
       e.target.classList.toggle("selected");
-      hiddenInput = document.getElementById(type + '-input');
-      caracID = e.target.getAttribute("data-id");
+      var hiddenInput = document.getElementById(type + '-input');
+      var caracID = e.target.getAttribute("data-id");
       hiddenInput.setAttribute("value", concatenateID(hiddenInput, caracID));
-
     });
   }
 }
