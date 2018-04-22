@@ -15,7 +15,6 @@ var populateQueryDict = function (query, args) {
     if (args.hasOwnProperty(element)) {
       args[element] = query[element];
     }
-
   }
   return args;
 }
@@ -25,7 +24,6 @@ var FileSync = require('lowdb/adapters/FileSync');
 var low = require('lowdb');
 var adapter = new FileSync('./data/data.json')
 var db = low(adapter)
-var _ = require("lodash");
 
 //Server Params
 var port = 3000;
