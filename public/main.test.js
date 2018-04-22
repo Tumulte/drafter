@@ -22,9 +22,7 @@ var req = {
 }
 var data = RESTRoute.fetchData(db, req);
 
-
 describe("Turn a Json into a fine HTML list", () => {
-
 
   it('should turn JSON data into HTML list', function () {
     expect(main.printFullDataList(data)).to.have.string('<li>author : <a class="filter-list" href="/api/authors/1">Frédéric Lordon</a></li>');
@@ -38,7 +36,7 @@ describe("it should create filter links", function () {
     main.createFilterLinks();
     $('a').click();
   });
-  it("should return a filtered list of quoets", function () {
+  it("should return a filtered list of quotes", function () {
 
     expect($("#quote-container ul").length).to.equal(1);
   });

@@ -12,6 +12,20 @@ input {
   margin-left: 1rem;
 }
 
+#quote-container li {
+  list-style: none;
+}
+
 .carac-button.selected {
   background: rgb(0, 162, 255);
+}
+
+.list-property {
+  font-size: 0.6rem;
+}
+
+.list-filter {
+  font-size: 0.8rem;
+  color: #666;
+  text-decoration: none;
 }

@@ -1,7 +1,10 @@
 html
   head
     title Test
-    script var authors=#{authors}; var authorsName = "#{authorsName}";
+    if authors
+      script var authors="#{authors}"; var authorsName = "#{authorsName}";
+    else
+      script var authors=false; var authorsName = false;
     script(src="/add.js")
     script(src="/main.js")
 
@@ -18,49 +21,60 @@ html
           input(type="text" name="death")
         label discipline
           div(id="disciplines-container")
-          input(type="text" id="disciplines-input" name="new_disciplines_")
-        input(type="hidden" name="existing_disciplines_")
+          input(type="text"  name="new_disciplines_")
+          input(type="text" id="disciplines-input" class="existing-disciplines" name="existing_disciplines_")
         label approach
           div(id="approaches-container")
           input(type="text" name="new_approaches_")
-          input(type="text" id="approaches-input" class="existing-approach" name="existing_approaches_")
+          input(type="text" id="approaches-input" class="existing-approaches" name="existing_approaches_")
         label Tags
           div(id="tags-container")
           input(type="text" name="new_tags_")
-          input(type="text" id="tags-input" class="existing-tags" name="existing_tags")
+          input(type="text" id="tags-input" class="existing-tags" name="existing_tags_")
         button Submit
   if authors && !medias
       div #{authorsName}
-      form(id="media-form" "action"="test")
+      form(id="media-form" method="post" action="/api/medias")
         label Title
-          input(type="text" name="media_name")
+          input(type="text" name="name")
         label Author
-          input(type="text", name="media_author_", value=authors)
+          input(type="text", name="author_", value=authors)
         label Subtitle
-          input(type="text" name="media_subtitle")
+          input(type="text" name="subtitle")
         label Year
-          input(type="text" name="media_year")
+          input(type="text" name="year")
         label Publisher
-          input(type="text" name="media_publisher")
+          input(type="text" name="publisher")
+        label To read :
+          input(type="checkbox", name="toread")
         label Tags
           div(id="tags-container")
-          input(type="text" name="media_tags_")
-          input(type="text" id="tags-input" class="existing-tags" name="media_existing_tags")
+          input(type="text" name="new_tags_")
+          input(type="text" id="tags-input" class="existing-tags" name="existing_tags_")
+        button Submit
+
   if authors && medias
       div #{authorsName} — #{mediasName}
-      form(id="quote-form" "action"="test")
+      form(id="media-form" method="post" action="/api/quotes")
         label Quote
-          input(type="textarea" name="quote_text")
+          textarea(name="text", cols="30", rows="10")
+        label Idée
+          textarea(name="idea", cols="30", rows="10")
         label Author
-          input(type="text", name="quote_author_", value=authors)
+          input(type="text", name="author_", value=authors)
         label Media
-          input(type="text", name="quote_medias_", value=medias)
+          input(type="text", name="media_", value=medias)
         label Page
-          input(type="text" name="quote_page")
+          input(type="text" name="page")
+        label From
+          input(type="text" name="from")
         label Time
-          input(type="text" name="quote_time")
+          input(type="text" name="time")
         label Tags
           div(id="tags-container")
-          input(type="text" name="quotes_tags_")
-          input(type="text" id="tags-input" class="existing-tags" name="quotes_existing_tags")
+          input(type="text" name="new_tags_")
+          input(type="text" id="tags-input" class="existing-tags" name="existing_tags_")
+
+        button Submit
+
 

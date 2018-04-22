@@ -5,7 +5,10 @@ var valueIntoFormFilter = function (element, property, type) {
     authorQuery = "&authors=" + authors + '&authorsName=' + authorsName;
   }
   if (property === "name") {
-    list += '<li><a class="form-filter" href="?' + type + '=' + element['id'] + '&' + type + 'Name=' + encodeURI(element[property]) + authorQuery + '">' + element[property] + '</a></li>';
+    list += '<li><a class="form-filter" href="?' + type + '=' + element['id'] +
+      '&' + type + 'Name=' + encodeURI(element[property]) + authorQuery + '">' +
+      element[property] +
+      '</a></li>';
   }
   return list;
 }

@@ -13,23 +13,28 @@ var extractFilterFromLink = function (link) {
 
 //Main
 var valueIntoList = function (element, property) {
-  var list = ""
+
+  var list = '<li><span class="list-property">'
   if (element[property][0] !== undefined && typeof element[property][0] === "object") {
+    var snippet = "";
     element[property].forEach(function (item) {
-      list += '<li>' + property + ' : <a class="filter-list" href="/api/' +
+      list += snippet + property + ' : </span> <a class="list-filter" href="/api/' +
         property + '/' + item.id + '">' + item.name + '</a></li>';
+      //TODO : ierk ugly
+      snippet = '<li><span class="list-property">';
     })
   } else if (typeof element[property] === "object") {
-
-    list += '<li>' + property + ' : <a class="filter-list" href="/api/' + property + "s/" + element[property].id + '">' + element[property].name + '</a></li>';
+    list += property + ' : </span><a class="list-filter" href="/api/' + property + "s/" + element[property].id + '">' + element[property].name + '</a></li>';
   } else if (element[property]) {
-    list += "<li>" + property + " : " + element[property] + "</li>";
+    list += property + ' : </span><span class="list-' + property + '">' + element[property] + "</span></li>";
 
+  } else {
+    list = "";
   }
   return list;
 }
 var createFilterLinks = function () {
-  var links = document.getElementsByClassName("filter-list");
+  var links = document.getElementsByClassName("list-filter");
   for (var i = 0; i < links.length; i++) {
     links[i].addEventListener("click", function (e) {
       e.preventDefault();
@@ -60,7 +65,7 @@ var printFullDataList = function (data) {
 var getData = function (type, filter, callback) {
   var request = new XMLHttpRequest();
   var url = "/api/" + type;
-  if (filter && typeof filter === 'number') {
+  if (filter && typeof filter === 'string') {
     url = "/api/" + type + "/" + filter;
   } else if (filter) {
     url = "/api/" + type + "/?" + filter.by + "=" + filter.id;

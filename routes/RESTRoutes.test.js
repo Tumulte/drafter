@@ -30,7 +30,6 @@ describe('GET /api', function () {
       .end(function (err, res) {
         expect(res.body[0].tags[0].name).to.equal('Capitalisme');
         expect(res.body[0].author.name).to.equal('Frédéric Lordon');
-        expect(res.body[0].cached).to.equal(true);
         done();
       });
   })
@@ -38,7 +37,7 @@ describe('GET /api', function () {
     request.get('/api/quotes/?author_=1')
       .expect(200)
       .end(function (err, res) {
-        expect(res.body.length).to.equal(2);
+        expect(res.body.length).to.equal(3);
         done();
       });
   })
@@ -78,7 +77,6 @@ describe('Should transform form data into lowdb compatible data', function () {
     existing_tags_: ''
   }
   var standardizeData = routes.standardizePostData(data)
-  console.info(standardizeData);
   it('It cleans up input name and replaces it with good ones', function () {
     expect(standardizeData.data).to.have.all.keys([
       "disciplines_", "id", "birth", "death", "name", "tags_", "test_", "approaches_"

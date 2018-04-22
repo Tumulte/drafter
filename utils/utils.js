@@ -1,6 +1,6 @@
 var relationnalChar = "_";
 var detectType = function (string) {
-  if (/^\d+$/.test(string)) {
+  if (!isNaN(string)) {
     string = Number(string)
   }
   return string;
