@@ -34,6 +34,7 @@ var valueIntoList = function (element, property) {
   return list;
 }
 var createFilterLinks = function () {
+
   var links = document.getElementsByClassName("list-filter");
   for (var i = 0; i < links.length; i++) {
     links[i].addEventListener("click", function (e) {

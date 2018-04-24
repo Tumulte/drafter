@@ -1,5 +1,4 @@
 var shortid = require('shortid');
-var utils = require('../utils/utils');
 
 var filterFromQuery = function (o, query) {
   for (var property in query) {
@@ -12,6 +11,13 @@ var filterFromQuery = function (o, query) {
   }
   return true;
 };
+var trimAroundComma = function (data) {
+  if (typeof data === "string") {
+    return data.replace(", ", ",").replace(" ,", ",");
+  }
+  return data;
+}
+//GET HANDLER
 var dataHandler = function (db, req) {
 
   this.data = {};
@@ -54,110 +60,111 @@ var dataHandler = function (db, req) {
   }
   this.get = function () {
     if (typeof req.params.quoteId !== "undefined") {
-      req.query = {
+      this.data = db.get(req.params.table).find({
         "id": req.params.quoteId
-      };
+      }).value();
+    } else {
+      this.data = db.get(req.params.table).filter(function (o) {
+        return filterFromQuery(o, req.query);
+      }).value();
     }
-    this.data = db.get(req.params.table).filter(function (o) {
-      return filterFromQuery(o, req.query);
-    }).value();
 
     return this;
   }
   this.getRelations = function () {
+    if (typeof this.data === "undefined") {
+      return this.data = false;
+    }
     var data = detachObject(this.data);
     this.data = findRelationnalProperties(data, db);
     return this.data;
   }
 }
 
+//POST HANDLER
 var dataWriteHandler = function (db, req) {
   var saveNewRelations = function (db, data) {
     data.forEach(function (element) {
-      var table = element.type;
-      element.forEach(function (data) {
-        if (data.hasOwnProperty("id") && data.id) {
-          db.get(table).push(
-            data
-          ).write();
-        }
-      });
+      var table = element.type.replace("_", "");
+      if (element.hasOwnProperty("id") && element.id) {
+        db.get(table).push({
+          id: element.id,
+          name: element.name
+        }).write();
+      }
     });
-  }
-  var handleRelations = function (existingData, newData, item) {
-    if (!newData && !existingData) {
-      return {
-        "IDArray": false
-      };
-    } else if (!newData) {
-      return existingData;
-    } else if (!existingData) {
-      existingData = [];
-    }
-    //TODO : handle single ID stuff
-    if (item === "author_" || item === "media_") {
-      return {
-        "IDArray": newData,
-        "newRelations": false
-      };
-    }
-    var newRelations = [];
-    var newRelationsID = [];
-    if (typeof newData === "string") {
-      newData = newData.split(',');
-    }
-
-    if (item.indexOf('existing') !== -1) {
-      return {
-        "IDArray": existingData.concat(newData)
-      };
-    }
-    newData.forEach(function (element) {
-      var id = shortid.generate();
-      newRelationsID.push(id);
-      newRelations.push({
-        "id": id,
-        "name": element.trim()
-      });
-    });
-    return {
-      "IDArray": existingData.concat(newRelationsID),
-      "newRelations": newRelations
-    };
   }
   var standardizePostData = function (data) {
+    this.data = data;
+    this.relations = [];
 
-    var standardizedData = {};
-    var newRelations = [];
-    standardizedData["id"] = shortid.generate();
-    for (var item in data) {
-      if (utils.isRelationnal(item)) {
-        var attribute = item.replace("existing_", "").replace("new_", "");
-        var existingData = false;
-        var newData = data[item];
-        if (standardizedData.hasOwnProperty(attribute)) {
-          existingData = standardizedData[attribute];
-        }
-        var relations = handleRelations(existingData, newData, item);
-        standardizedData[attribute] = relations.IDArray;
-        if (relations.newRelations) {
-          newRelations.push(relations.newRelations);
-        }
+    this.data["id"] = shortid.generate();
 
-        if (relations.hasOwnProperty("newRelations")) {
-          relations.newRelations["type"] = attribute.replace("_", "");
-        } else {
-          relations["newRelations"] = false;
-        }
-      } else {
-        standardizedData[item] = data[item];
-      }
-    }
-    return {
-      "data": standardizedData,
-      "relations": newRelations
+
+    var addExistingID = function (item) {
+      var attributeName = item.replace("existing_", "");
+      this.data[attributeName] = this.data[item];
+      delete this.data[item];
+      return this;
     };
+    var handleNewRelations = function (item) {
+      if (this.data[item] === "") {
+        return false;
+      } else if (typeof this.data[item] === "string") {
+        this.data[item] = this.data[item].split(',');
+      }
+
+      var newRelationsID = "";
+
+      this.data[item].forEach(function (element) {
+        var id = shortid.generate();
+        newRelationsID += "," + id;
+        this.relations.push({
+          "id": id,
+          "name": element.trim(),
+          "type": item.replace("new_", "")
+        });
+      });
+      return newRelationsID
+
+    };
+    var standardizeIdList = function (list) {
+      if (list.charAt(0) === ',') {
+        list = list.slice(1);
+      }
+      list = trimAroundComma(list);
+      return list.split(',');
+    }
+
+    var populateRelations = function () {
+      for (var item in data) {
+        if (item.indexOf("existing_") !== -1) {
+          addExistingID(item);
+        }
+      }
+      for (item in data) {
+        if (item.indexOf("new_") !== -1) {
+          var attributeName = item.replace("new_", "");
+          if (!this.data[attributeName] && this.data[item] === "") {
+            this.data[attributeName] = false;
+          } else {
+            var relations = handleNewRelations(item);
+            var idList = this.data[attributeName] += relations;
+            this.data[attributeName] = standardizeIdList(idList);
+          }
+
+          delete this.data[item];
+
+        }
+      }
+      return this
+    }
+
+    populateRelations();
+    return this;
   }
+
+
   this.save = function () {
     var data = standardizePostData(req.body);
     db.get(req.params.table).push(

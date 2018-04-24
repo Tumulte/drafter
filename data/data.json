@@ -149,8 +149,7 @@
       "name": "La Malfaçon",
       "subtitle": "Monnaie européenne et souveraineté démocratique",
       "year": "2014",
-      "publisher": "Babel",
-      "tags_": false
+      "publisher": "Babel"
     },
     {
       "id": "rJGF3T05f",
@@ -158,10 +157,7 @@
       "name": "Du bien-être au marché du malaise",
       "subtitle": "La société du développement personnel",
       "year": "2014",
-      "publisher": "PUF",
-      "tags_": [
-        "Skxb3KpR5M"
-      ]
+      "publisher": "PUF"
     },
     {
       "id": "ByH8QYJif",
@@ -170,11 +166,7 @@
       "subtitle": "Sociologie de l'extraordinaire",
       "year": "2011",
       "publisher": "CNRS",
-      "toread": "on",
-      "tags_": [
-        "HkWLAMtJsG",
-        "rJg80ftyjf"
-      ]
+      "toread": "on"
     },
     {
       "id": "HkImy5Jsf",
@@ -182,11 +174,7 @@
       "author_": "HycgAtyoz",
       "subtitle": "The relationship of the self with itself in popular self help texts",
       "year": "2003",
-      "publisher": "Journal of sociology",
-      "tags_": [
-        "Skxb3KpR5M",
-        "SJeMzqKysz"
-      ]
+      "publisher": "Journal of sociology"
     }
   ],
   "authors": [{
@@ -204,8 +192,7 @@
         "2",
         "3",
         "4"
-      ],
-      "tags_": false
+      ]
     },
     {
       "id": "r1W2F6A9M",
@@ -215,11 +202,7 @@
       "disciplines_": [
         "2"
       ],
-      "approaches_": false,
-      "tags_": [
-        "Skxb3KpR5M",
-        "1"
-      ]
+      "approaches_": false
     },
     {
       "id": "ByU0MKksz",
@@ -239,10 +222,7 @@
       "disciplines_": [
         "2"
       ],
-      "approaches_": false,
-      "tags_": [
-        "Skxb3KpR5M"
-      ]
+      "approaches_": false
     }
   ],
   "type": [{

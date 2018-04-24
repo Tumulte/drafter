@@ -27,10 +27,6 @@ html
           div(id="approaches-container")
           input(type="text" name="new_approaches_")
           input(type="text" id="approaches-input" class="existing-approaches" name="existing_approaches_")
-        label Tags
-          div(id="tags-container")
-          input(type="text" name="new_tags_")
-          input(type="text" id="tags-input" class="existing-tags" name="existing_tags_")
         button Submit
   if authors && !medias
       div #{authorsName}
@@ -47,10 +43,6 @@ html
           input(type="text" name="publisher")
         label To read :
           input(type="checkbox", name="toread")
-        label Tags
-          div(id="tags-container")
-          input(type="text" name="new_tags_")
-          input(type="text" id="tags-input" class="existing-tags" name="existing_tags_")
         button Submit
 
   if authors && medias

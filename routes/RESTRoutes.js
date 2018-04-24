@@ -4,16 +4,21 @@ var dataHandler = dbHandler.dataHandler;
 var dataWriteHandler = dbHandler.dataWriteHandler;
 
 
-
 var RESTRoutes = function (db) {
   var dataRouter = express.Router();
   dataRouter.use('/:table/:quoteId', function (req, res, next) {
     if (db.has(req.params.table).value()) {
       var data = new dataHandler(db, req);
-      req.data = data.get().getRelations();
-      next();
+      data = data.get().getRelations();
+      if (data === false) {
+        res.status(404).send('Item "' + req.params.quoteId + '" does not exist');
+      } else {
+        req.data = data;
+        next();
+      }
+
     } else {
-      res.status(404).send('this data ' + req.params.table + ' does not exist')
+      res.status(404).send('this data ' + req.params.table + ' does not exist');
     }
   })
 
@@ -27,7 +32,6 @@ var RESTRoutes = function (db) {
     })
     .post(function (req, res) {
       var data = new dataWriteHandler(db, req);
-
       res.send(data.save());
     })
   dataRouter.route('/:table/:quoteId')
